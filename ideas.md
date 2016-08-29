@@ -237,3 +237,57 @@ LeagueofL 48299 Sancarn  156r     REG               1,1    8483156 46937328 /App
 LeagueofL 48299 Sancarn  157r     REG               1,1     751266 44741857 /Applications/League of Legends.app/Contents/LoL/RADS/projects/lol_game_client_en_gb/managedfiles/0.0.0.208/DATA/Sounds/Wwise/VO/en_US/Characters/Annie/Skins/Base/Annie_Base_VO_audio.wpk
 ```
 
+These files should be analysed for changes while playing a game of LoL. Try to spot patterns etc. These may be a nice client side comprimise, without having to analyse packets.
+
+# Assuming we do need to analyse packets...
+
+Using Wireshark:
+Use filter ``` ip.addr == 185.40.66.171 ``` to filter out Source/Destination of Riot Games Limited (EUW).
+Use filter ``` ip.src == 185.40.66.171 ``` to filter Riot Server to PC Client messages.
+Use filter ``` ip.dst == 185.40.66.171 ``` to filter PC Client to Riot Server messages.
+
+From here we have the oppertunity to test certain things. Activate ability, call events like pings etc. And then we can analyse the packets sent to Riot's server from us. We can also analyse packets sent to use from Riot - allied pings for example.
+
+# Other dirty analysis
+
+For a sound pack, in the end, we don't need a full proof mechanism which is 100% accurate. We would like to determine when certain events occur, however these events can largely be seen through the UI. For example which champion have you picked?
+
+![PickChamp](http://i.imgur.com/M2C677E.png)
+
+From the main menu you can even get people's names and from an OCR you can extract text in game:
+
+![InGameOCR](http://i.imgur.com/MkDK82w.jpg)
+
+returns
+
+```
+1W“? 12/0/0 ‘44 “46:51
+FPS:I58 331m
+
+[10:55] Gnarph LaDiv (Kog‘May/J4 o i think
+[ jsrp‘gakn 5 jew (Leona): not evﬁﬁ cod oneseitherme
+
+[12:5 I] svyyvﬁaﬁm wShyvm is o mmg spree!
+
+[13:49] Gnarph (Kog‘Maw) signalsgghaf gmwes are missing
+
+[ :57] FTUmP Mahou (Ahri) 15 on a 45:35 spree!
+
+11:36] Gnarph (Kog’Maw) has cfmmxisgr’ mm bounty! (Team Gold:
+1506) 1 $1”
+
+315.50] Sancarn (Leona) Elgnals thatjnemles are missing
+
+’783 '0
+
+F1117 Q47
+7410.77 ‘71036
+0 ’3 397
+
+’ Image;
+A.- E. k/- \
+\ 1705/1 u;
+611/611 M'
+```
+
+from an online OCR. Data harvesting like this may be an option for extracting some information out of the LoL client. Similarly image searching could be used to determine, which champion is being used, when the active champion is out of mana, health, and also how much health the team has accross the board. These are all things the player has access to via his/her senses
